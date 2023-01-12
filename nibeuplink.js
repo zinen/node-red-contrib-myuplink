@@ -52,14 +52,18 @@ module.exports = function (RED) {
       node.server = RED.nodes.getNode(config.server)
       try {
         if (!node.server.authCodeDone) {
+          node.status({ fill: '', text: 'Waiting for auth code. See warning in console for url link' })
           node.warn(`Open webpage to get OAuth code https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${node.server.clientId}&scope=READSYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`)
           done()
           return
         }
+        node.status({ fill: '', text: 'Requesting data' })
         msg.payload = await node.server.getNibeData()
         send(msg)
+        node.status({ fill: '', text: '' })
         done()
       } catch (error) {
+        node.status({ fill: 'red', text: error.message })
         done(error.message)
       }
     })
