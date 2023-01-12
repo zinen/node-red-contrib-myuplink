@@ -1,0 +1,42 @@
+{
+  "name": "node-red-contrib-nibeuplink",
+  "version": "0.0.1",
+  "description": "A Node-Red Node for collecting data from nibe uplink.",
+  "keywords": [
+    "node-red",
+    "nibeuplink",
+    "volund"
+  ],
+  "bugs": {
+    "url": "https://github.com/zinen/node-red-contrib-nibeuplink/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "zinen"
+  },
+  "files": [
+    "nibeuplink.html"
+  ],
+  "main": "nibeuplink.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zinen/node-red-contrib-nibeuplink"
+  },
+  "dependencies": {
+    "nibe-fetcher": "^1.1.0"
+  },
+  "scripts": {
+    "pretest": "npm install node-red-node-test-helper node-red mocha --no-save",
+    "test": "mocha \"test/**/*_spec.js\""
+  },
+  "node-red": {
+    "version": ">=1.0.0",
+    "nodes": {
+      "nibeuplink": "nibeuplink.js"
+    }
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
