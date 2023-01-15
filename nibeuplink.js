@@ -1,28 +1,28 @@
 module.exports = function (RED) {
   'use strict'
   const NibeFetcher = require('nibe-fetcher')
-  function nibeuplinkConfig (n) {
+  function nibeuplinkConfigNode(n) {
     RED.nodes.createNode(this, n)
     const node = this
     node.nibeFetcher = new NibeFetcher({
-      clientId: n.clientId,
-      clientSecret: n.clientSecret,
-      authCode: n.authCode,
-      systemId: n.systemId,
+      clientId: node.credentials.clientId,
+      clientSecret: node.credentials.clientSecret,
+      systemId: node.credentials.systemId,
+      authCode: node.credentials.authCode || "",
       autoStart: false
     })
-    node.clientId = n.clientId
-    node.authCodeDone = n.authCode? true : false
-    node.getNibeData = async function() {
+    node.clientId = node.credentials.clientId
+    node.authCodeDone = node.credentials.authCode ? true : false
+    node.getNibeData = async function () {
       const node = this
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         node.nibeFetcher.start()
         node.nibeFetcher.on('data', (data) => {
           const payload = {}
           data.forEach(element => {
-            if (typeof element.key  == "number") {
+            if (typeof element.key == "number") {
               return
-            } 
+            }
             element.key = String(element.key) + "_" + element.unit.replace("°C", "degreeC").replace("%", "percentage").replace("/", "_pr_")
             if (payload[element.categoryId]) {
               payload[element.categoryId][element.key] = element.value || element.rawValue
@@ -43,15 +43,26 @@ module.exports = function (RED) {
       });
     }
   }
-  RED.nodes.registerType('nibeuplink-config', nibeuplinkConfig)
+  RED.nodes.registerType('nibeuplink-config', nibeuplinkConfigNode, {
+    credentials: {
+      clientId: { type: "text" },
+      clientSecret: { type: "password" },
+      systemId: { type: "text" },
+      authCode: { value: "password" }
+    }
+  })
 
-  function nibeuplink (config) {
+  function nibeuplinkNode(config) {
     RED.nodes.createNode(this, config)
     const node = this
     node.on('input', async function (msg, send, done) {
       node.server = RED.nodes.getNode(config.server)
       try {
-        if (!node.server.authCodeDone) {
+        if (!node.server.clientId) {
+          node.status({ fill: 'red', text: 'Client ID is missing. Add it to config' })
+          done('Client ID is missing. Add it to config')
+          return
+        } else if (!node.server.authCodeDone) {
           node.status({ fill: '', text: 'Waiting for auth code. See warning in console for url link' })
           node.warn(`Open webpage to get OAuth code https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${node.server.clientId}&scope=READSYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`)
           done()
@@ -68,5 +79,5 @@ module.exports = function (RED) {
       }
     })
   }
-  RED.nodes.registerType('nibeuplink', nibeuplink)
+  RED.nodes.registerType('nibeuplink', nibeuplinkNode)
 }

@@ -3,17 +3,32 @@
         category: 'config',
         defaults: {
             name: {value:""},
-            clientId: {value:"", required: true },
-            clientSecret: {value:"", required: true },
-            systemId: {Value:"", required: true },
-            authCode: {value:""},
+            authCodeDone: {value:false}
+        },
+        credentials: {
+            clientId: {type:"text"},
+            clientSecret: {type:"password"},
+            systemId: {type:"text"},
+            authCode: {value:"password"}
         },
         label: function() {
+            if (this.name) {
+                return this.name;
+            }
             let defaultName="nibe uplink config"
-            if (!this.authCode) {
+            if (!this.authCodeDone) {
                 defaultName += " (missing auth code)"
             }
-            return this.name || defaultName;
+            return defaultName;
+        },
+        oneditsave: function () {
+            if ($("#node-config-input-clientId").val() && $("#node-config-input-authCode").val()) {
+                this.authCodeDone = true
+                return 
+            } else if ($("#node-config-input-clientId").val()){
+                window.open(`https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${this.credentials.clientId}&scope=READSYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
+            }
+            this.authCodeDone = false
         }
     });
 </script>
@@ -23,8 +38,10 @@
         <label for="node-config-input-name"><i class="fa fa-user"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Optional name">
     </div>
+    <div class="form-row">
     <div class="form-tips"><p>To get a client login you need to register an application at <a href="https://api.nibeuplink.com/" target="_blank">api.nibeuplink.com</a></p>
     <p>Give your application a name and description. Callback URL needs to be http://z0mt3c.github.io/nibe.html</p></div>
+    </div>
     <div class="form-row">
         <label for="node-config-input-clientId"><i class="fa fa-user"></i> Client Identifier</label>
         <input type="text" id="node-config-input-clientId" placeholder="jlk12341hasd2224">
@@ -33,14 +50,18 @@
         <label for="node-config-input-clientSecret"><i class="fa fa-key"></i> Client secret</label>
         <input type="password" id="node-config-input-clientSecret" placeholder="asdagf34263st4erfs213qas" autocomplete="off">
     </div>
-    <div class="form-tips"><p>Get your system id at nibeuplink.com enter status page of unit and find system id in URL like X inside https://nibeuplink.com/System/x/Status/Overview
-    </p></div>
+    <div class="form-row">
+    <div class="form-tips">Get your system id at <a href="https://nibeuplink.com/" target="_blank">nibeuplink.com</a> enter status page of unit and find system id in URL like X inside https://nibeuplink.com/System/X/Status/Overview
+    </div>
+    </div>
     <div class="form-row">
         <label for="node-config-input-systemId"><i class="fa fa-globe"></i> System ID</label>
         <input type="text" id="node-config-input-systemId" placeholder="64087" autocomplete="off">
     </div>
-    <div class="form-tips"><p>Leave auth code empty at first run go get the URL needed to authenticate. You will be directed from api.nibeuplink.com back to the defined Callback URL mentioned above. The Callback URL will reveal your auth code
-        </p></div>
+    <div class="form-row">
+    <div class="form-tips">Leave auth code empty at first run go get the URL needed to authenticate. You will be directed from api.nibeuplink.com back to the defined Callback URL mentioned above. The Callback URL will reveal your auth code
+        </div>
+    </div>
     <div class="form-row">
         <label for="node-config-input-authCode"><i class="fa fa-key"></i> authCode</label>
         <input type="password" id="node-config-input-authCode" placeholder="should be empty at first run" autocomplete="off">
@@ -50,7 +71,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('nibeuplink',{
         category: 'request',
-        color: '#a6bbcf',
+        color: '#e55050',
         defaults: {
             name: {value:""},
             server: {type:"nibeuplink-config", required:true},
@@ -59,7 +80,7 @@
         outputs:1,
         icon: "white-globe.png",
         label: function() {
-            return this.name ||"nibe uplink";
+            return this.name ||"NIBE Uplink";
         }
     });
 </script>
