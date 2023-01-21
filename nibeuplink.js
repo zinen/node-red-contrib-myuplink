@@ -37,7 +37,7 @@ module.exports = function (RED) {
         })
         node.nibeFetcher.on('error', (data) => {
           node.nibeFetcher.stop()
-          node.nibeFetcher.clear()
+          // node.nibeFetcher.clear()
           reject(data)
         })
       });
