@@ -16,8 +16,9 @@ module.exports = function (RED) {
     node.getNibeData = async function () {
       const node = this
       return new Promise(function (resolve, reject) {
-        node.nibeFetcher.start()
-        node.nibeFetcher.on('data', (data) => {
+        node.nibeFetcher.once('data', (data) => {
+          node.nibeFetcher.stop()
+          node.nibeFetcher.removeListener('error')
           const payload = {}
           data.forEach(element => {
             if (typeof element.key == "number") {
@@ -32,14 +33,16 @@ module.exports = function (RED) {
               }
             }
           })
-          node.nibeFetcher.stop()
+          
           resolve(payload)
         })
-        node.nibeFetcher.on('error', (data) => {
+        node.nibeFetcher.once('error', (data) => {
           node.nibeFetcher.stop()
+          node.nibeFetcher.removeListener('data')
           // node.nibeFetcher.clear()
           reject(data)
         })
+        node.nibeFetcher.start()
       });
     }
   }
