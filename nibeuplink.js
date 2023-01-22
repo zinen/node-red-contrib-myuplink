@@ -18,7 +18,7 @@ module.exports = function (RED) {
       return new Promise(function (resolve, reject) {
         node.nibeFetcher.once('data', (data) => {
           node.nibeFetcher.stop()
-          node.nibeFetcher.removeListener('error')
+          node.nibeFetcher.removeEventListener('error')
           const payload = {}
           data.forEach(element => {
             if (typeof element.key == "number") {
@@ -38,7 +38,7 @@ module.exports = function (RED) {
         })
         node.nibeFetcher.once('error', (data) => {
           node.nibeFetcher.stop()
-          node.nibeFetcher.removeListener('data')
+          node.nibeFetcher.removeEventListener('data')
           // node.nibeFetcher.clear()
           reject(data)
         })
