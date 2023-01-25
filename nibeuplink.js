@@ -35,13 +35,18 @@ module.exports = function (RED) {
         if (error.message.includes('Need new authCode.')) {
           // Normal to hit this on first request or when session expires
           node.status({ fill: '', text: 'Waiting for auth code. See warning in console for url link' })
-
         } else {
           node.status({ fill: 'red', text: error.message })
         }
         done(error.message)
       }
     })
+    this.on('close', function() {
+        node.server = RED.nodes.getNode(config.server)
+        // Safety measure as a backup to keep the queue ready
+        node.server.nibeuplinkClient.requestQueueActive = false
+        node.server.nibeuplinkClient.requestQueue = 0
+  });
   }
   RED.nodes.registerType('nibeuplink', nibeuplinkNode)
 }
