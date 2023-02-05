@@ -1,27 +1,33 @@
 <script type="text/javascript">
-    RED.nodes.registerType('nibeuplink-config',{
+    RED.nodes.registerType('nibeuplink-config', {
         category: 'config',
         defaults: {
-            name: {value:""},
-            authCode: {value:""}
+            name: { value: "" },
+            authCode: { value: "" },
         },
         credentials: {
-            clientId: {type:"text"},
-            clientSecret: {type:"password"},
-            systemId: {type:"text"},
+            clientId: { type: "text" },
+            clientSecret: { type: "password" },
+            systemId: { type: "text" },
         },
-        label: function() {
+        label: function () {
             if (this.name) {
                 return this.name;
             }
-            let defaultName="nibe uplink config"
+            let defaultName = "nibe uplink config"
             if (!this.authCode) {
                 defaultName += " (missing auth code)"
             }
             return defaultName;
         },
+        oneditprepare: function () {
+            $("#node-config-input-systemId").typedInput({
+                type: "num",
+                types: ["num"]
+            })
+        },
         oneditsave: function () {
-            if ($("#node-config-input-clientId").val() && !$("#node-config-input-authCode").val()){
+            if ($("#node-config-input-clientId").val() && !$("#node-config-input-authCode").val()) {
                 window.open(`https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
             }
         }
@@ -64,22 +70,21 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('nibeuplink',{
+    RED.nodes.registerType('nibeuplink', {
         category: 'request',
         color: '#e55050',
         defaults: {
-            name: {value:""},
-            server: {type:"nibeuplink-config", required:true},
+            name: { value: "" },
+            server: { type: "nibeuplink-config", required: true },
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "white-globe.png",
-        label: function() {
-            return this.name ||"NIBE Uplink";
+        label: function () {
+            return this.name || "NIBE Uplink";
         }
     });
 </script>
-
 
 <script type="text/html" data-template-name="nibeuplink">
     <div class="form-row">
