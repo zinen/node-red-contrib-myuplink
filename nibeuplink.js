@@ -3,7 +3,7 @@ module.exports = function (RED) {
   const NibeuplinkClient = require('nibe-fetcher-promise')
   const Path = require('path')
   const fs = require('node:fs/promises')
-  function nibeuplinkConfigNode(n) {
+  function NibeuplinkConfigNode(n) {
     RED.nodes.createNode(this, n)
     const node = this
     try {
@@ -31,7 +31,7 @@ module.exports = function (RED) {
       done()
     })
   }
-  RED.nodes.registerType('nibeuplink-config', nibeuplinkConfigNode, {
+  RED.nodes.registerType('nibeuplink-config', NibeuplinkConfigNode, {
     credentials: {
       clientId: { type: "text" },
       clientSecret: { type: "password" },
@@ -39,7 +39,7 @@ module.exports = function (RED) {
     }
   })
 
-  function nibeuplinkNode(config) {
+  function NibeuplinkNode(config) {
     RED.nodes.createNode(this, config)
     const node = this
     node.on('input', async function (msg, send, done) {
@@ -51,7 +51,23 @@ module.exports = function (RED) {
       }
       try {
         node.status({ fill: '', text: 'Requesting data' })
-        msg.payload = await node.server.nibeuplinkClient.getAllParameters()
+        if (node.outputChoice == 'default') {
+          msg.payload = await node.server.nibeuplinkClient.getAllParameters()
+        } else if (node.outputChoice == 'msg.category') {
+          if (!node.server.nibeuplinkClient.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.systemId
+          const getCategory = msg.category || ""
+          const query = { parameters: true, systemUnitId: msg.systemUnitId || node.server.nibeuplinkClient.systemUnitId || 0 }
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/serviceinfo/categories/${getCategory}`, query)
+        } else if (node.outputChoice == 'systemStatus') {
+          if (!node.server.nibeuplinkClient.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.systemId
+          const query = { systemUnitId: msg.systemUnitId || node.server.nibeuplinkClient.systemUnitId || 0 }
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/systemUnit/${systemUnitId}`, query)
+        } else {
+          done('Error understanding configured Output choice')
+          return
+        }
         node.status({ fill: '', text: '' })
         send(msg)
         done()
@@ -74,5 +90,5 @@ module.exports = function (RED) {
       }
     })
   }
-  RED.nodes.registerType('nibeuplink', nibeuplinkNode)
+  RED.nodes.registerType('nibeuplink', NibeuplinkNode)
 }

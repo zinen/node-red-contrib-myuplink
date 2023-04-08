@@ -3,12 +3,12 @@
         category: 'config',
         defaults: {
             name: { value: "" },
-            authCode: { value: "" },
+            authCode: { value: "" }
         },
         credentials: {
             clientId: { type: "text" },
             clientSecret: { type: "password" },
-            systemId: { type: "text" },
+            systemId: { type: "text" }
         },
         label: function () {
             if (this.name) {
@@ -52,7 +52,7 @@
         <input type="password" id="node-config-input-clientSecret" placeholder="asdagf34263st4erfs213qas" autocomplete="off">
     </div>
     <div class="form-row">
-    <div class="form-tips">Optional. This is auto filled with your newest added system and so only needed if you have multiple system on your account. Get your system id at <a href="https://nibeuplink.com/" target="_blank">nibeuplink.com</a> enter status page of unit and find system id in URL like X inside https://nibeuplink.com/System/X/Status/Overview
+    <div class="form-tips">Optional. The <code>System ID</code> is auto filled with your newest added system and so only needed if you have multiple system on your account. Get your system id at <a href="https://nibeuplink.com/" target="_blank">nibeuplink.com</a> enter status page of unit and find system id in URL like X inside https://nibeuplink.com/System/X/Status/Overview
     </div>
     </div>
     <div class="form-row">
@@ -76,6 +76,8 @@
         defaults: {
             name: { value: "" },
             server: { type: "nibeuplink-config", required: true },
+            outputChoice: { value: "default" },
+            systemUnitId: { value: "" }
         },
         inputs: 1,
         outputs: 1,
@@ -94,6 +96,18 @@
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-globe"></i> Config</label>
         <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-outputChoice"><i class="fa fa-globe"></i> Output choice</label>
+        <select value="" id="node-input-outputChoice">
+            <option value="default">Default parsed data</option>
+            <option value="msg.category">Input msg.category</option>
+            <option value="systemStatus">Input msg.systemStatus</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-systemUnitId"><i class="fa fa-globe"></i> System Unit ID</label>
+        <input type="text" id="node-input-systemUnitId" placeholder="Optional e.g: 0 or via msg.systemUnitId" autocomplete="off">
     </div>
 </script>
 
