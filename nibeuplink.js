@@ -3,11 +3,12 @@ module.exports = function (RED) {
   const NibeuplinkClient = require('nibe-fetcher-promise')
   const Path = require('path')
   const fs = require('node:fs/promises')
-  function nibeuplinkConfigNode(n) {
+  function NibeuplinkConfigNode(n) {
     RED.nodes.createNode(this, n)
     const node = this
     try {
       node.nibeuplinkClient = new NibeuplinkClient({
+        // debug: 2, // TODO: remove this
         clientId: node.credentials.clientId,
         clientSecret: node.credentials.clientSecret,
         systemId: node.credentials.systemId || undefined,
@@ -31,7 +32,7 @@ module.exports = function (RED) {
       done()
     })
   }
-  RED.nodes.registerType('nibeuplink-config', nibeuplinkConfigNode, {
+  RED.nodes.registerType('nibeuplink-config', NibeuplinkConfigNode, {
     credentials: {
       clientId: { type: "text" },
       clientSecret: { type: "password" },
@@ -39,9 +40,10 @@ module.exports = function (RED) {
     }
   })
 
-  function nibeuplinkNode(config) {
+  function NibeuplinkNode(config) {
     RED.nodes.createNode(this, config)
     const node = this
+    this.config = config
     node.on('input', async function (msg, send, done) {
       node.server = RED.nodes.getNode(config.server)
       if (!node.server || !node.server.nibeuplinkClient) {
@@ -51,7 +53,27 @@ module.exports = function (RED) {
       }
       try {
         node.status({ fill: '', text: 'Requesting data' })
-        msg.payload = await node.server.nibeuplinkClient.getAllParameters()
+        // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
+        if (!node.config.outputChoice || node.config.outputChoice == 'default') {
+          if (msg.systemUnitId) {
+            node.warn('Input of msg.systemUnitId is ignored using default output choice')
+          }
+          msg.payload = await node.server.nibeuplinkClient.getAllParameters()
+        } else if (node.config.outputChoice == 'msg.category') {
+          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.options.systemId
+          const getCategory = msg.category || ""
+          const query = { parameters: true, systemUnitId: msg.systemUnitId || node.config.systemUnitId || 0 }
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/serviceinfo/categories/${getCategory}`, query)
+        } else if (node.config.outputChoice == 'systemStatus') {
+          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.options.systemId
+          const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/systemUnit/${systemUnitId}`)
+        } else {
+          done('Error understanding configured Output choice')
+          return
+        }
         node.status({ fill: '', text: '' })
         send(msg)
         done()
@@ -74,5 +96,5 @@ module.exports = function (RED) {
       }
     })
   }
-  RED.nodes.registerType('nibeuplink', nibeuplinkNode)
+  RED.nodes.registerType('nibeuplink', NibeuplinkNode)
 }
