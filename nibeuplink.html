@@ -100,9 +100,9 @@
     <div class="form-row">
         <label for="node-input-outputChoice"><i class="fa fa-globe"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
-            <option value="default">Default parsed data</option>
-            <option value="msg.category">Input msg.category</option>
-            <option value="systemStatus">Input msg.systemStatus</option>
+            <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
+            <option value="msg.category">GET /serviceinfo/categories/{msg.category}</option>
+            <option value="systemStatus">GET /status/systemUnit/{msg.systemUnitId}</option>
         </select>
     </div>
     <div class="form-row">
@@ -112,9 +112,22 @@
 </script>
 
 <script type="text/html" data-help-name="nibeuplink">
-    <p>A Node-Red Node for collecting data from nibe uplink.</p>
+    <p>A Node-Red Node for collecting data from nibe uplink API v1 <a href="https://api.nibeuplink.com/docs/v1" target="_blank">documentation found here</a>.</p>
     <h3>Inputs</h3>
-    <p> Any </p>
+    <dl class="message-properties">
+        <dt>category
+            <span class="property-type">string</span>
+        </dt>
+        <dd>
+            If category is the chosen output find <a href="https://api.nibeuplink.com/docs/v1/ResourceModel?modelName=Categories" target="_blank">a category from documentation</a> and send it to the node.
+        </dd>
+        <dt>systemUnitId
+            <span class="property-type">number</span>
+        </dt>
+        <dd>
+            Sending this overrides configured system Unit ID. The master is defined as 0. Any slaves will be higher number from that.
+        </dd>
+    </dl>
     <h3>Output</h3>
     <p> Return object with raw API data</p>
 </script>
