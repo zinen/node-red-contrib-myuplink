@@ -115,11 +115,11 @@
     <p>A Node-Red Node for collecting data from nibe uplink API v1 <a href="https://api.nibeuplink.com/docs/v1" target="_blank">documentation found here</a>.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
-        <dt>category
+        <dt>msg.category
             <span class="property-type">string</span>
         </dt>
         <dd>
-            If category is the chosen output find <a href="https://api.nibeuplink.com/docs/v1/ResourceModel?modelName=Categories" target="_blank">a category from documentation</a> and send it to the node.
+            If get category data is the chosen as output. Then find <a href="https://api.nibeuplink.com/docs/v1/ResourceModel?modelName=Categories" target="_blank">a category from documentation</a> and send it to the node. Or leave empty empty to get the available categories for service info data on system.
         </dd>
         <dt>systemUnitId
             <span class="property-type">number</span>
@@ -129,5 +129,5 @@
         </dd>
     </dl>
     <h3>Output</h3>
-    <p> Return object with raw API data</p>
+    <p> Returns object with response from API</p>
 </script>

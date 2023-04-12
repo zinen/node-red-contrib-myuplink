@@ -56,7 +56,7 @@ module.exports = function (RED) {
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice == 'default') {
           if (msg.systemUnitId) {
-            node.warn('Input of msg.systemUnitId is ignored using default output choice')
+            node.warn('Input of msg.systemUnitId is ignored when using default output choice')
           }
           msg.payload = await node.server.nibeuplinkClient.getAllParameters()
         } else if (node.config.outputChoice == 'msg.category') {
