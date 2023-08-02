@@ -29,8 +29,8 @@ I only tested the stuff me or others requested. As of v0.3.0 support for systemU
 |  | GET api/v1/systems/{systemId}/units | READSYSTEM |
 |  | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
 |  | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
-|  | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
+| in dev | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
+| in dev | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
 |  | GET api/v1/systems/{systemId}/premium | READSYSTEM |
 | yes, raw and parsed | GET api/v1/systems/{systemId}/serviceinfo/categories | READSYSTEM |
 | yes | GET api/v1/systems/{systemId}/serviceinfo/categories/{categoryId} | READSYSTEM |

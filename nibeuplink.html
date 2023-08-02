@@ -103,6 +103,8 @@
             <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
             <option value="msg.category">GET /serviceinfo/categories/{msg.category}</option>
             <option value="systemStatus">GET /status/systemUnit/{msg.systemUnitId}</option>
+            <option value="parametersGet">GET /parameters</option>
+            <option value="parametersPut">PUT /parameters, body={msg.payload}</option>
         </select>
     </div>
     <div class="form-row">
@@ -115,13 +117,19 @@
     <p>A Node-Red Node for collecting data from nibe uplink API v1 <a href="https://api.nibeuplink.com/docs/v1" target="_blank">documentation found here</a>.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
+        <dt>msg.payload
+            <span class="property-type">object</span>
+        </dt>
+        <dd>
+            Used for PUT requests.
+        </dd>
         <dt>msg.category
             <span class="property-type">string</span>
         </dt>
         <dd>
             If get category data is the chosen as output. Then find <a href="https://api.nibeuplink.com/docs/v1/ResourceModel?modelName=Categories" target="_blank">a category from documentation</a> and send it to the node. Or leave empty empty to get the available categories for service info data on system.
         </dd>
-        <dt>systemUnitId
+        <dt>msg.systemUnitId
             <span class="property-type">number</span>
         </dt>
         <dd>

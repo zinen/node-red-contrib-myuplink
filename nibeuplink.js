@@ -70,6 +70,15 @@ module.exports = function (RED) {
           const systemID = node.server.nibeuplinkClient.options.systemId
           const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/systemUnit/${systemUnitId}`)
+        } else if (node.config.outputChoice == 'parametersGet') {
+          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.options.systemId
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/parameters`)
+        } else if (node.config.outputChoice == 'parametersPut') {
+          if (!msg.payload) throw new Error(`payload was empty. It must not be.`)
+          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
+          const systemID = node.server.nibeuplinkClient.options.systemId
+          msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/parameters`,msg.payload)
         } else {
           done('Error understanding configured Output choice')
           return
