@@ -103,7 +103,7 @@
             <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
             <option value="msg.category">GET /serviceinfo/categories/{msg.category}</option>
             <option value="systemStatus">GET /status/systemUnit/{msg.systemUnitId}</option>
-            <option value="parametersGet">GET /parameters</option>
+            <option value="parametersGet">GET /parameters, body={msg.payload}</option>
             <option value="parametersPut">PUT /parameters, body={msg.payload}</option>
         </select>
     </div>
@@ -121,7 +121,7 @@
             <span class="property-type">object</span>
         </dt>
         <dd>
-            Used for PUT requests.
+            Used for parameters requests.
         </dd>
         <dt>msg.category
             <span class="property-type">string</span>

@@ -53,6 +53,8 @@ module.exports = function (RED) {
       }
       try {
         node.status({ fill: '', text: 'Requesting data' })
+        if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
+        const systemID = node.server.nibeuplinkClient.options.systemId
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice == 'default') {
           if (msg.systemUnitId) {
@@ -60,27 +62,20 @@ module.exports = function (RED) {
           }
           msg.payload = await node.server.nibeuplinkClient.getAllParameters()
         } else if (node.config.outputChoice == 'msg.category') {
-          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
-          const systemID = node.server.nibeuplinkClient.options.systemId
           const getCategory = msg.category || ""
           const query = { parameters: true, systemUnitId: msg.systemUnitId || node.config.systemUnitId || 0 }
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/serviceinfo/categories/${getCategory}`, query)
         } else if (node.config.outputChoice == 'systemStatus') {
-          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
-          const systemID = node.server.nibeuplinkClient.options.systemId
           const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/systemUnit/${systemUnitId}`)
         } else if (node.config.outputChoice == 'parametersGet') {
-          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
-          const systemID = node.server.nibeuplinkClient.options.systemId
-          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/parameters`)
+          if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
         } else if (node.config.outputChoice == 'parametersPut') {
-          if (!msg.payload) throw new Error(`payload was empty. It must not be.`)
-          if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
-          const systemID = node.server.nibeuplinkClient.options.systemId
-          msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/parameters`,msg.payload)
+          if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
+          msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
         } else {
-          done('Error understanding configured Output choice')
+          done('Error understanding configured output choice')
           return
         }
         node.status({ fill: '', text: '' })
