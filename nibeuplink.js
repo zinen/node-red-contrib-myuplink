@@ -8,11 +8,12 @@ module.exports = function (RED) {
     const node = this
     try {
       node.nibeuplinkClient = new NibeuplinkClient({
-        // debug: 2, // TODO: remove this
+        debug: 2, // TODO: remove this
         clientId: node.credentials.clientId,
         clientSecret: node.credentials.clientSecret,
         systemId: node.credentials.systemId || undefined,
         authCode: n.authCode || "",
+        scope: 'READSYSTEM WRITESYSTEM',
         sessionStore: Path.join(__dirname, '.session' + node.id + '.json')
       })
     } catch (error) {
