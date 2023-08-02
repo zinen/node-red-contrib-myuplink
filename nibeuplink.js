@@ -89,7 +89,7 @@ module.exports = function (RED) {
         } else {
           node.status({ fill: 'red', text: error.message || error })
         }
-        done(error.message)
+        done(error.message || error)
       }
     })
     this.on('close', function () {
