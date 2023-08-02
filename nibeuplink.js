@@ -73,7 +73,7 @@ module.exports = function (RED) {
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
         } else if (node.config.outputChoice == 'parametersPut') {
           if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
-          msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
+          msg.payload = await node.server.nibeuplinkClient.putURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
         } else {
           done('Error understanding configured output choice')
           return
