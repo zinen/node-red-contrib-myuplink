@@ -8,7 +8,7 @@ module.exports = function (RED) {
     const node = this
     try {
       node.nibeuplinkClient = new NibeuplinkClient({
-        debug: 2, // TODO: remove this
+        // debug: 2, // TODO: remove this
         clientId: node.credentials.clientId,
         clientSecret: node.credentials.clientSecret,
         systemId: node.credentials.systemId || undefined,
@@ -27,9 +27,7 @@ module.exports = function (RED) {
           if (node.nibeuplinkClient) node.nibeuplinkClient.clearSession()
           fs.unlink(Path.join(__dirname, '.session' + node.id + '.json')).catch()
         }
-      } catch (_) {
-        //
-      }
+      } catch (_) { }
       done()
     })
   }
@@ -56,25 +54,46 @@ module.exports = function (RED) {
         node.status({ fill: '', text: 'Requesting data' })
         if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
         const systemID = node.server.nibeuplinkClient.options.systemId
+        const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice == 'default') {
-          if (msg.systemUnitId) {
-            node.warn('Input of msg.systemUnitId is ignored when using default output choice')
-          }
           msg.payload = await node.server.nibeuplinkClient.getAllParameters()
-        } else if (node.config.outputChoice == 'msg.category') {
-          const getCategory = msg.category || ""
-          const query = { parameters: true, systemUnitId: msg.systemUnitId || node.config.systemUnitId || 0 }
-          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/serviceinfo/categories/${getCategory}`, query)
-        } else if (node.config.outputChoice == 'systemStatus') {
-          const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
+        } else if (node.config.outputChoice == 'statusSystem') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/system`)
+        } else if (node.config.outputChoice == 'statusSystemUnit') {
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/status/systemUnit/${systemUnitId}`)
+        } else if (node.config.outputChoice == 'system') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}`)
+        } else if (node.config.outputChoice == 'software') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/software`)
+        } else if (node.config.outputChoice == 'config') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/config`)
+        } else if (node.config.outputChoice == 'units') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/units`)
+        } else if (node.config.outputChoice == 'notifications') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/notifications`)
         } else if (node.config.outputChoice == 'parametersGet') {
           if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
           msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
         } else if (node.config.outputChoice == 'parametersPut') {
           if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
           msg.payload = await node.server.nibeuplinkClient.putURLPath(`api/v1/systems/${systemID}/parameters`, msg.payload)
+        } else if (node.config.outputChoice == 'premium') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/premium`)
+        } else if (node.config.outputChoice == 'categories') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/serviceinfo/categories/${msg.payload || ""}`, { parameters: true, systemUnitId: systemUnitId })
+        } else if (node.config.outputChoice == 'modeGet') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/smarthome/mode`)
+        } else if (node.config.outputChoice == 'modePut') {
+          if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
+          msg.payload = await node.server.nibeuplinkClient.putURLPath(`api/v1/systems/${systemID}/smarthome/mode`, msg.payload)
+        } else if (node.config.outputChoice == 'thermostatsGet') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/${systemID}/smarthome/thermostats`, msg.payload)
+        } else if (node.config.outputChoice == 'thermostatsPost') {
+          if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
+          msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/smarthome/thermostats`, msg.payload)
+        } else if (node.config.outputChoice == 'systems') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`api/v1/systems/`)
         } else {
           done('Error understanding configured output choice')
           return

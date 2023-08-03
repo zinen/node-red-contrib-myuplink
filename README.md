@@ -17,25 +17,23 @@ Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
 
 Documentation of functions are found here https://api.nibeuplink.com/docs/v1/Functions
 
-I only tested the stuff me or others requested. As of v0.3.0 support for systemUnitId added. Prior to this or if undefined, only master unit was supported.
-
 | Included in node | Functions | Scope |
 |---|---|---|
-|  | GET api/v1/systems/{systemId}/status/system | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/status/system | READSYSTEM |
 | yes | GET api/v1/systems/{systemId}/status/systemUnit/{systemUnitId} | READSYSTEM |
-|  | GET api/v1/systems/{systemId} | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/software | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/config | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/units | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-| in dev | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
-| in dev | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
-|  | GET api/v1/systems/{systemId}/premium | READSYSTEM |
+| yes | GET api/v1/systems/{systemId} | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/software | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/config | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/units | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
+| yes | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
+| yes | GET api/v1/systems/{systemId}/premium | READSYSTEM |
 | yes, raw and parsed | GET api/v1/systems/{systemId}/serviceinfo/categories | READSYSTEM |
 | yes | GET api/v1/systems/{systemId}/serviceinfo/categories/{categoryId} | READSYSTEM |
-|  | GET api/v1/systems/{systemId}/smarthome/mode | READSYSTEM |
-|  | PUT api/v1/systems/{systemId}/smarthome/mode | WRITESYSTEM |
-|  | GET api/v1/systems/{systemId}/smarthome/thermostats | READSYSTEM |
-|  | POST api/v1/systems/{systemId}/smarthome/thermostats | WRITESYSTEM |
-|  | GET api/v1/systems | READSYSTEM |
+| yes | GET api/v1/systems/{systemId}/smarthome/mode | READSYSTEM |
+| yes | PUT api/v1/systems/{systemId}/smarthome/mode | WRITESYSTEM |
+| yes | GET api/v1/systems/{systemId}/smarthome/thermostats | READSYSTEM |
+| yes | POST api/v1/systems/{systemId}/smarthome/thermostats | WRITESYSTEM |
+| yes | GET api/v1/systems | READSYSTEM |
