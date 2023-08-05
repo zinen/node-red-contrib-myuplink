@@ -28,7 +28,7 @@
         },
         oneditsave: function () {
             if ($("#node-config-input-clientId").val() && !$("#node-config-input-authCode").val()) {
-                window.open(`https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
+                window.open(`https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM%20WRITESYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
             }
         }
     });
@@ -45,7 +45,7 @@
     </div>
     <div class="form-row">
         <label for="node-config-input-clientId"><i class="fa fa-user"></i> Client Identifier</label>
-        <input type="text" id="node-config-input-clientId" placeholder="jlk12341hasd2224">
+        <input type="text" id="node-config-input-clientId" placeholder="jlk12341has12224">
     </div>
     <div class="form-row">
         <label for="node-config-input-clientSecret"><i class="fa fa-key"></i> Client secret</label>
@@ -83,7 +83,7 @@
         outputs: 1,
         icon: "white-globe.png",
         label: function () {
-            return this.name || "NIBE Uplink";
+            return this.name || "NIBE Uplink " + this.outputChoice;
         }
     });
 </script>
@@ -101,8 +101,22 @@
         <label for="node-input-outputChoice"><i class="fa fa-globe"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
             <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
-            <option value="msg.category">GET /serviceinfo/categories/{msg.category}</option>
-            <option value="systemStatus">GET /status/systemUnit/{msg.systemUnitId}</option>
+            <option value="statusSystem">GET /status/system</option>
+            <option value="statusSystemUnit">GET /status/systemUnit/{msg.systemUnitId}</option>
+            <option value="system">GET /systems/{config:systemId}</option>
+            <option value="software">GET /systems/{config:systemId}/software</option>
+            <option value="config">GET /systems/{config:systemId}/config</option>
+            <option value="units">GET /systems/{config:systemId}/units</option>
+            <option value="notifications">GET /systems/{config:systemId}/notifications</option>
+            <option value="parametersGet">GET /parameters, body={msg.payload}</option>
+            <option value="parametersPut">PUT /parameters, body={msg.payload}</option>
+            <option value="premium">GET /premium</option>
+            <option value="categories">GET /serviceinfo/categories/{msg.payload}</option>
+            <option value="modeGet">GET /smarthome/mode</option>
+            <option value="modePut">PUT /smarthome/mode, body={msg.payload}</option>
+            <option value="thermostatsGet">GET /smarthome/thermostats</option>
+            <option value="thermostatsPost">POST /smarthome/thermostats, body={msg.payload}</option>
+            <option value="systems">GET /systems</option>
         </select>
     </div>
     <div class="form-row">
@@ -113,19 +127,20 @@
 
 <script type="text/html" data-help-name="nibeuplink">
     <p>A Node-Red Node for collecting data from nibe uplink API v1 <a href="https://api.nibeuplink.com/docs/v1" target="_blank">documentation found here</a>.</p>
+    <p><i>Import examples for help and a quick start</i></p>
     <h3>Inputs</h3>
     <dl class="message-properties">
-        <dt>msg.category
-            <span class="property-type">string</span>
+        <dt>msg.payload
+            <span class="property-type">object</span>
         </dt>
         <dd>
-            If get category data is the chosen as output. Then find <a href="https://api.nibeuplink.com/docs/v1/ResourceModel?modelName=Categories" target="_blank">a category from documentation</a> and send it to the node. Or leave empty empty to get the available categories for service info data on system.
+            Used for parameter and category requests.
         </dd>
-        <dt>systemUnitId
+        <dt>msg.systemUnitId
             <span class="property-type">number</span>
         </dt>
         <dd>
-            Sending this overrides configured system Unit ID. The master is defined as 0. Any slaves will be higher number from that.
+            Only for <code>/status/systemUnit/{systemUnitId}</code> this overrides configured system Unit ID. The master is defined as 0. Any slaves will be higher number from that. (system Unit ID is not the same as system Id).
         </dd>
     </dl>
     <h3>Output</h3>
