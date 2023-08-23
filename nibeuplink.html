@@ -36,7 +36,7 @@
 
 <script type="text/html" data-template-name="nibeuplink-config">
     <div class="form-row">
-        <label for="node-config-input-name"><i class="fa fa-user"></i> Name</label>
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Optional name">
     </div>
     <div class="form-row">
@@ -48,7 +48,7 @@
         <input type="text" id="node-config-input-clientId" placeholder="jlk12341has12224">
     </div>
     <div class="form-row">
-        <label for="node-config-input-clientSecret"><i class="fa fa-key"></i> Client secret</label>
+        <label for="node-config-input-clientSecret"><i class="fa fa-lock"></i> Client secret</label>
         <input type="password" id="node-config-input-clientSecret" placeholder="asdagf34263st4erfs213qas" autocomplete="off">
     </div>
     <div class="form-row">
@@ -81,7 +81,7 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "white-globe.png",
+        icon: "white-globe.svg",
         label: function () {
             return this.name || "NIBE Uplink " + this.outputChoice;
         }
@@ -90,15 +90,15 @@
 
 <script type="text/html" data-template-name="nibeuplink">
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-user"></i> Name</label>
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Optional name">
     </div>
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-globe"></i> Config</label>
+        <label for="node-input-server"><i class="fa fa-cog"></i> Config</label>
         <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
-        <label for="node-input-outputChoice"><i class="fa fa-globe"></i> Output choice</label>
+        <label for="node-input-outputChoice"><i class="fa fa-envelope"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
             <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
             <option value="statusSystem">GET /status/system</option>
@@ -120,7 +120,7 @@
         </select>
     </div>
     <div class="form-row">
-        <label for="node-input-systemUnitId"><i class="fa fa-globe"></i> System Unit ID</label>
+        <label for="node-input-systemUnitId"><i class="fa fa-tasks"></i> System Unit ID</label>
         <input type="text" id="node-input-systemUnitId" placeholder="Optional e.g: 0 or via msg.systemUnitId" autocomplete="off">
     </div>
 </script>
