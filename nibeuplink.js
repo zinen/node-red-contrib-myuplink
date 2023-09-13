@@ -45,16 +45,15 @@ module.exports = function (RED) {
     this.config = config
     node.on('input', async function (msg, send, done) {
       node.server = RED.nodes.getNode(config.server)
-      if (!node.server || !node.server.nibeuplinkClient) {
-        node.status({ fill: 'red', text: 'Unknown config error' })
-        done('Unknown config error')
-        return
-      }
       try {
+        if (!node.server || !node.server.nibeuplinkClient) {
+          throw new Error('Unknown config error')
+        }
         node.status({ fill: '', text: 'Requesting data' })
         if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
         const systemID = node.server.nibeuplinkClient.options.systemId
         const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
+        if (msg.authCode && typeof msg.authCode === 'string') node.server.nibeuplinkClient.options.systemId = String()
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice === 'default') {
           msg.payload = await node.server.nibeuplinkClient.getAllParameters()
@@ -95,8 +94,7 @@ module.exports = function (RED) {
         } else if (node.config.outputChoice === 'systems') {
           msg.payload = await node.server.nibeuplinkClient.getURLPath('api/v1/systems/')
         } else {
-          done('Error understanding configured output choice')
-          return
+          throw new Error('Error understanding configured output choice')
         }
         node.status({ fill: '', text: '' })
         send(msg)

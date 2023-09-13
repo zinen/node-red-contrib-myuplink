@@ -142,6 +142,12 @@
         <dd>
             Only for <code>/status/systemUnit/{systemUnitId}</code> this overrides configured system Unit ID. The master is defined as 0. Any slaves will be higher number from that. (system Unit ID is not the same as system Id).
         </dd>
+        <dt>msg.authCode
+            <span class="property-type">string</span>
+        </dt>
+        <dd>
+            If an error request a new onetime use auth code. Either edit the config of the node or input it along with your payload next run of this node.
+        </dd>
     </dl>
     <h3>Output</h3>
     <p> Returns object with response from API</p>
