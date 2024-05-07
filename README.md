@@ -1,15 +1,19 @@
-# node-red-contrib-nibeuplink / myuplink
-Node-Red Node for collecting data from nibe uplink.
+# node-red-contrib-myuplink BETA TESTING
+Node-Red Node for collecting data from MyUplink.
 
 [![Platform](https://img.shields.io/badge/platform-Node--RED-red.svg)](https://nodered.org)
 
+
+**How to install**
+Help beta test if you got the time. You would need access to console. Cd to dir of node-red instance and run:
+```
+npm install https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024
+```
+
 During setup of config you will be guided on how to sign up for an API key to your own account. For an easy start import the example.
 
-**BETA testing now: Looking for myuplink?** As of 2024 a new API(myuplink) is being rolled out to replace NibeUplink. New branch under developing [find the branch and details here](https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024). 
-
-
 **How to import:**
-Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
+Menu top right -> Import -> Examples -> node-red-contrib-myuplink -> basic
 
 ![](image/node.png) The node
 
@@ -18,25 +22,4 @@ Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
 
 ## List of supported functions
 
-Documentation of functions are found here https://api.nibeuplink.com/docs/v1/Functions
-
-| Included in node | Functions | Scope |
-|---|---|---|
-| yes | GET api/v1/systems/{systemId}/status/system | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/status/systemUnit/{systemUnitId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/software | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/config | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/units | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
-| yes | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
-| yes | GET api/v1/systems/{systemId}/premium | READSYSTEM |
-| yes, raw and parsed | GET api/v1/systems/{systemId}/serviceinfo/categories | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/serviceinfo/categories/{categoryId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/smarthome/mode | READSYSTEM |
-| yes | PUT api/v1/systems/{systemId}/smarthome/mode | WRITESYSTEM |
-| yes | GET api/v1/systems/{systemId}/smarthome/thermostats | READSYSTEM |
-| yes | POST api/v1/systems/{systemId}/smarthome/thermostats | WRITESYSTEM |
-| yes | GET api/v1/systems | READSYSTEM |
+Documentation of functions are found here https://api.myuplink.com/swagger/index.html
