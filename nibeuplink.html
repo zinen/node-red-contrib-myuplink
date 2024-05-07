@@ -45,11 +45,11 @@
     </div>
     <div class="form-row">
         <label for="node-config-input-clientId"><i class="fa fa-user"></i> Client Identifier</label>
-        <input type="text" id="node-config-input-clientId" placeholder="jlk12341has12224" autocomplete="off">
+        <input type="text" id="node-config-input-clientId" placeholder="jlk12341h-as12224-0045" autocomplete="off">
     </div>
     <div class="form-row">
         <label for="node-config-input-clientSecret"><i class="fa fa-lock"></i> Client secret</label>
-        <input type="password" id="node-config-input-clientSecret" placeholder="asdagf34263st4erfs213qas" autocomplete="off">
+        <input type="password" id="node-config-input-clientSecret" placeholder="asdag-f34263s-t4erfs2-13qas" autocomplete="off">
     </div>
     <div class="form-row">
     <div class="form-tips">Optional. The <code>System ID</code> is auto filled with your newest added system and so only needed if you have multiple system on your account. Get your system id at BETA TESTER: ???? i don't know yet where you would find this info.
@@ -101,6 +101,7 @@
         <label for="node-input-outputChoice"><i class="fa fa-envelope"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
             <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
+            <!-- 
             <option value="statusSystem">GET /status/system</option>
             <option value="statusSystemUnit">GET /status/systemUnit/{msg.systemUnitId}</option>
             <option value="system">GET /systems/{config:systemId}</option>
@@ -116,6 +117,7 @@
             <option value="modePut">PUT /smarthome/mode, body={msg.payload}</option>
             <option value="thermostatsGet">GET /smarthome/thermostats</option>
             <option value="thermostatsPost">POST /smarthome/thermostats, body={msg.payload}</option>
+             -->
             <option value="systems">GET /systems</option>
         </select>
     </div>
