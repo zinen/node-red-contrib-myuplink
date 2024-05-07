@@ -92,7 +92,7 @@ module.exports = function (RED) {
         //   if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
         //   msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/smarthome/thermostats`, msg.payload)
         } else if (node.config.outputChoice === 'systems') {
-          msg.payload = await node.server.nibeuplinkClient.getURLPath('api/v1/systems/me')
+          msg.payload = await node.server.nibeuplinkClient.getURLPath('/v2/systems/me')
         } else {
           throw new Error('Error understanding configured output choice')
         }
