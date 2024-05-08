@@ -1,5 +1,5 @@
 # node-red-contrib-myuplink BETA TESTING
-Node-Red Node for collecting data from MyUplink.
+Node-Red Node for collecting data from myUplink.
 
 [![Platform](https://img.shields.io/badge/platform-Node--RED-red.svg)](https://nodered.org)
 
