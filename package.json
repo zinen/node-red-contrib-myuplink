@@ -23,7 +23,7 @@
   "main": "nibeuplink.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zinen/node-red-contrib-nibeuplink"
+    "url": "https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024"
   },
   "scripts": {
     "test": "standard",
