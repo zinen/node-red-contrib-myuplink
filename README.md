@@ -7,7 +7,7 @@ Node-Red Node for collecting data from myUplink.
 **How to install**
 Help beta test if you got the time. You would need access to console. Cd to dir of node-red instance and run:
 ```
-npm install https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024
+npm install github:zinen/node-red-contrib-nibeuplink#myuplink2024 github:zinen/node-nibe-fetcher-promise#myuplink2024
 ```
 
 During setup of config you will be guided on how to sign up for an API key to your own account. For an easy start import the example.
