@@ -51,8 +51,8 @@ module.exports = function (RED) {
         }
         node.status({ fill: '', text: 'Requesting data' })
         if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
-        // const systemID = node.server.nibeuplinkClient.options.systemId
-        // const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
+        const systemId = node.server.nibeuplinkClient.options.systemId
+        const deviceId = node.server.nibeuplinkClient.options.deviceId || 0
         if (msg.authCode && typeof msg.authCode === 'string') node.server.nibeuplinkClient.options.systemId = String()
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice === 'default') {
@@ -91,8 +91,30 @@ module.exports = function (RED) {
         // } else if (node.config.outputChoice === 'thermostatsPost') {
         //   if (!msg.payload || typeof msg.payload !== 'object') throw new Error('payload must be an object.')
         //   msg.payload = await node.server.nibeuplinkClient.postURLPath(`api/v1/systems/${systemID}/smarthome/thermostats`, msg.payload)
+        } else if (node.config.outputChoice === 'GET-aid-mode') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/devices/${deviceId}/aidMode`)
+        } else if (node.config.outputChoice === 'GET-devices') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/devices/${deviceId}`)
+        } else if (node.config.outputChoice === 'GET-smart-home-categories') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/devices/${deviceId}/smart-home-categories`)
+        } else if (node.config.outputChoice === 'GET-smart-home-zones') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/devices/${deviceId}/smart-home-zones`)
+        } else if (node.config.outputChoice === 'PATCH-devices-points') {
+          msg.payload = await node.server.nibeuplinkClient.patchURLPath(`/v2/devices/${deviceId}/points`, msg.payload)
+        } else if (node.config.outputChoice === 'PATCH-devices-zones') {
+          msg.payload = await node.server.nibeuplinkClient.patchURLPath(`/v2/devices/${deviceId}/points`, msg.payload)
+        } else if (node.config.outputChoice === 'GET-devices-points') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v3/devices/${deviceId}/points`)
+        } else if (node.config.outputChoice === 'GET-alarms') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/systems/${systemId}/notifications`)
         } else if (node.config.outputChoice === 'systems') {
           msg.payload = await node.server.nibeuplinkClient.getURLPath('/v2/systems/me')
+        } else if (node.config.outputChoice === 'PUT-smart-home-mode') {
+          const acceptedValues = ['Default', 'Normal', 'Away', 'Vacation', 'Home']
+          if (!acceptedValues.includes(msg.payload)) throw new Error(`payload must string with content of either: ${acceptedValues.join(' or ')}.`)
+          msg.payload = await node.server.nibeuplinkClient.putURLPath(`/v2/systems/${systemId}/smart-home-mode`, { smartHomeMode: msg.payload })
+        } else if (node.config.outputChoice === 'GET-smart-home-mode') {
+          msg.payload = await node.server.nibeuplinkClient.getURLPath(`/v2/systems/${systemId}/smart-home-mode`)
         } else {
           throw new Error('Error understanding configured output choice')
         }

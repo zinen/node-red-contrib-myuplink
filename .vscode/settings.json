@@ -16,5 +16,6 @@
     "asdagf",
     "erfs",
     "Fnibe"
-  ]
+  ],
+  "standard.autoFixOnSave": true
 }
