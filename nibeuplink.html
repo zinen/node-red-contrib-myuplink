@@ -28,7 +28,7 @@
         },
         oneditsave: function () {
             if ($("#node-config-input-clientId").val() && !$("#node-config-input-authCode").val()) {
-                window.open(`https://api.myuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM%20WRITESYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
+                window.open(`https://api.myuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM%20WRITESYSTEM%20offline_access&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
             }
         }
     });
