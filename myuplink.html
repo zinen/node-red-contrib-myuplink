@@ -103,24 +103,7 @@
     <div class="form-row">
         <label for="node-input-outputChoice"><i class="fa fa-envelope"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
-            <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
-            <!-- 
-            <option value="statusSystem">GET /status/system</option>
-            <option value="statusSystemUnit">GET /status/systemUnit/{msg.systemUnitId}</option>
-            <option value="system">GET /systems/{config:systemId}</option>
-            <option value="software">GET /systems/{config:systemId}/software</option>
-            <option value="config">GET /systems/{config:systemId}/config</option>
-            <option value="units">GET /systems/{config:systemId}/units</option>
-            <option value="notifications">GET /systems/{config:systemId}/notifications</option>
-            <option value="parametersGet">GET /parameters, body={msg.payload}</option>
-            <option value="parametersPut">PUT /parameters, body={msg.payload}</option>
-            <option value="premium">GET /premium</option>
-            <option value="categories">GET /serviceinfo/categories/{msg.payload}</option>
-            <option value="modeGet">GET /smarthome/mode</option>
-            <option value="modePut">PUT /smarthome/mode, body={msg.payload}</option>
-            <option value="thermostatsGet">GET /smarthome/thermostats</option>
-            <option value="thermostatsPost">POST /smarthome/thermostats, body={msg.payload}</option>
-             -->
+            <option value="default">GET /v3/devices/{deviceId}/points (parsed, easy-to-read)</option>
             <option value="GET-aid-mode">GET /v2/devices/{deviceId}/aidMode</option>
             <option value="GET-devices">GET /v2/devices/{deviceId}</option>
             <option value="GET-smart-home-categories">GET /v2/devices/{deviceId}/smart-home-categories</option>
