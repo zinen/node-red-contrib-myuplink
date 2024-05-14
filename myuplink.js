@@ -39,7 +39,7 @@ module.exports = function (RED) {
     }
   })
 
-  function NibeuplinkNode (config) {
+  function MyUplinkNode (config) {
     RED.nodes.createNode(this, config)
     const node = this
     this.config = config
@@ -106,5 +106,5 @@ module.exports = function (RED) {
       }
     })
   }
-  RED.nodes.registerType('myuplink', NibeuplinkNode)
+  RED.nodes.registerType('myuplink', MyUplinkNode)
 }
