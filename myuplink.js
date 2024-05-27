@@ -70,7 +70,7 @@ module.exports = function (RED) {
         } else if (node.config.outputChoice === 'PATCH-devices-zones') {
           msg.payload = await node.server.myUplinkClient.patchURLPath(`/v2/devices/${deviceId}/points`, msg.payload)
         } else if (node.config.outputChoice === 'GET-devices-points') {
-          msg.payload = await node.server.myUplinkClient.getURLPath(`/v3/devices/${deviceId}/points`)
+          msg.payload = await node.server.myUplinkClient.getURLPath(`/v3/devices/${deviceId}/points`, msg.payload || null)
         } else if (node.config.outputChoice === 'GET-alarms') {
           msg.payload = await node.server.myUplinkClient.getURLPath(`/v2/systems/${systemId}/notifications`)
         } else if (node.config.outputChoice === 'systems') {
