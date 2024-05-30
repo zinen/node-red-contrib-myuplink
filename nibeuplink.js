@@ -49,11 +49,15 @@ module.exports = function (RED) {
         if (!node.server || !node.server.nibeuplinkClient) {
           throw new Error('Unknown config error')
         }
+        if (msg.authCode && typeof msg.authCode === 'string') {
+          node.server.nibeuplinkClient.options.authCode = String(msg.auth)
+          await node.server.nibeuplinkClient.getNewAccessToken()
+          node.warn('Nibe uplink one time auth code used to update token successful.')
+        }
         node.status({ fill: '', text: 'Requesting data' })
         if (!node.server.nibeuplinkClient.options.systemId) await node.server.nibeuplinkClient.getSystems()
         const systemID = node.server.nibeuplinkClient.options.systemId
         const systemUnitId = msg.systemUnitId || node.config.systemUnitId || 0
-        if (msg.authCode && typeof msg.authCode === 'string') node.server.nibeuplinkClient.options.systemId = String()
         // Note that outputChoice might be undefined if this node was installed in version 0.2.0 or before
         if (!node.config.outputChoice || node.config.outputChoice === 'default') {
           msg.payload = await node.server.nibeuplinkClient.getAllParameters()
