@@ -50,7 +50,7 @@ module.exports = function (RED) {
           throw new Error('Unknown config error')
         }
         if (msg.authCode && typeof msg.authCode === 'string') {
-          node.server.nibeuplinkClient.options.authCode = String(msg.auth)
+          node.server.nibeuplinkClient.options.authCode = String(msg.authCode)
           await node.server.nibeuplinkClient.getNewAccessToken()
           node.warn('Nibe uplink one time auth code used to update token successful.')
         }
