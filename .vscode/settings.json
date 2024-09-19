@@ -1,8 +1,6 @@
 {
   "cSpell.words": [
     "myuplink",
-    "nibe",
-    "nibeuplink",
     "oneditprepare",
     "oneditsave",
     "READSYSTEM",
@@ -14,8 +12,7 @@
   ],
   "cSpell.ignoreWords": [
     "asdagf",
-    "erfs",
-    "Fnibe"
+    "erfs"
   ],
   "standard.autoFixOnSave": true
 }

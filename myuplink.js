@@ -1,9 +1,9 @@
 module.exports = function (RED) {
   'use strict'
-  const MyUplinkClient = require('myuplink-fetcher')
+  const MyUplinkClient = require('myuplink-fetcher-promise')
   const path = require('node:path')
   const fs = require('node:fs/promises')
-  function NibeuplinkConfigNode (n) {
+  function myUplinkConfigNode (n) {
     RED.nodes.createNode(this, n)
     const node = this
     try {
@@ -31,7 +31,7 @@ module.exports = function (RED) {
       done()
     })
   }
-  RED.nodes.registerType('myuplink-config', NibeuplinkConfigNode, {
+  RED.nodes.registerType('myuplink-config', myUplinkConfigNode, {
     credentials: {
       clientId: { type: 'text' },
       clientSecret: { type: 'password' },
