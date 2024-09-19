@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('nibeuplink-config', {
+    RED.nodes.registerType('myuplink-config', {
         category: 'config',
         defaults: {
             name: { value: "" },
@@ -14,7 +14,7 @@
             if (this.name) {
                 return this.name;
             }
-            let defaultName = "nibe uplink config"
+            let defaultName = "myUplink config"
             if (!this.authCode) {
                 defaultName += " (missing auth code)"
             }
@@ -28,31 +28,31 @@
         },
         oneditsave: function () {
             if ($("#node-config-input-clientId").val() && !$("#node-config-input-authCode").val()) {
-                window.open(`https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM%20WRITESYSTEM&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
+                window.open(`https://api.myuplink.com/oauth/authorize?response_type=code&client_id=${$("#node-config-input-clientId").val()}&scope=READSYSTEM%20WRITESYSTEM%20offline_access&redirect_uri=http%3A%2F%2Fz0mt3c.github.io%2Fnibe.html&state=init`, '_blank')
             }
         }
     });
 </script>
 
-<script type="text/html" data-template-name="nibeuplink-config">
+<script type="text/html" data-template-name="myuplink-config">
     <div class="form-row">
         <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Optional name">
     </div>
     <div class="form-row">
-    <div class="form-tips"><p>To get a client login you need to register an application at <a href="https://api.nibeuplink.com/" target="_blank">api.nibeuplink.com</a></p>
+    <div class="form-tips"><p>To get a client login you need to register an application at <a href="https://dev.myuplink.com/apps" target="_blank">dev.myuplink.com/apps</a></p>
     <p>Give your application a name and description. Callback URL needs to be http://z0mt3c.github.io/nibe.html</p></div>
     </div>
     <div class="form-row">
         <label for="node-config-input-clientId"><i class="fa fa-user"></i> Client Identifier</label>
-        <input type="text" id="node-config-input-clientId" placeholder="jlk12341has12224">
+        <input type="text" id="node-config-input-clientId" placeholder="jlk12341h-as12224-0045" autocomplete="off">
     </div>
     <div class="form-row">
         <label for="node-config-input-clientSecret"><i class="fa fa-lock"></i> Client secret</label>
-        <input type="password" id="node-config-input-clientSecret" placeholder="asdagf34263st4erfs213qas" autocomplete="off">
+        <input type="password" id="node-config-input-clientSecret" placeholder="asdag-f34263s-t4erfs2-13qas" autocomplete="off">
     </div>
     <div class="form-row">
-    <div class="form-tips">Optional. The <code>System ID</code> is auto filled with your newest added system and so only needed if you have multiple system on your account. Get your system id at <a href="https://nibeuplink.com/" target="_blank">nibeuplink.com</a> enter status page of unit and find system id in URL like X inside https://nibeuplink.com/System/X/Status/Overview
+    <div class="form-tips">Optional. The <code>System ID</code> is auto filled with your newest added system and so only needed if you have multiple system on your account. Get your system id at BETA TESTER: ???? i don't know yet where you would find this info.
     </div>
     </div>
     <div class="form-row">
@@ -60,22 +60,25 @@
         <input type="text" id="node-config-input-systemId" placeholder="Optional e.g: 489451" autocomplete="off">
     </div>
     <div class="form-row">
-    <div class="form-tips">Leave the one time use auth code field empty at first run go get the URL needed to authenticate. You will be directed from api.nibeuplink.com back to the defined Callback URL mentioned above. The Callback URL will reveal your one time auth code
+    <div class="form-tips">Leave the one time use auth code field empty at first run go get the URL needed to authenticate. You will be directed from api.myuplink.com back to the defined Callback URL mentioned above. The Callback URL will reveal your one time auth code
         </div>
     </div>
     <div class="form-row">
         <label for="node-config-input-authCode"><i class="fa fa-key"></i> One time use authCode</label>
         <input type="text" id="node-config-input-authCode" placeholder="should be empty at first run. Will then open a popup on save." autocomplete="off">
     </div>
+    <div class="form-row">
+        <div class="form-tips"><b>Remember to check the offline access checkmark in the popup</b> Else you will need generate a new one time auth code every hour! I know the offline access statement seems worrisome but that just means that your auth codes can be refreshed without you needing to login and approve it each time/aka every hour.</div>
+        </div>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('nibeuplink', {
+    RED.nodes.registerType('myuplink', {
         category: 'request',
         color: '#e55050',
         defaults: {
             name: { value: "" },
-            server: { type: "nibeuplink-config", required: true },
+            server: { type: "myuplink-config", required: true },
             outputChoice: { value: "default" },
             systemUnitId: { value: "" }
         },
@@ -83,12 +86,12 @@
         outputs: 1,
         icon: "white-globe.svg",
         label: function () {
-            return this.name || "NIBE Uplink " + this.outputChoice;
+            return this.name || "myUplink " + this.outputChoice;
         }
     });
 </script>
 
-<script type="text/html" data-template-name="nibeuplink">
+<script type="text/html" data-template-name="myuplink">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Optional name">
@@ -100,23 +103,18 @@
     <div class="form-row">
         <label for="node-input-outputChoice"><i class="fa fa-envelope"></i> Output choice</label>
         <select value="" id="node-input-outputChoice">
-            <option value="default">GET /serviceinfo/categories (parsed, easy-to-read)</option>
-            <option value="statusSystem">GET /status/system</option>
-            <option value="statusSystemUnit">GET /status/systemUnit/{msg.systemUnitId}</option>
-            <option value="system">GET /systems/{config:systemId}</option>
-            <option value="software">GET /systems/{config:systemId}/software</option>
-            <option value="config">GET /systems/{config:systemId}/config</option>
-            <option value="units">GET /systems/{config:systemId}/units</option>
-            <option value="notifications">GET /systems/{config:systemId}/notifications</option>
-            <option value="parametersGet">GET /parameters, body={msg.payload}</option>
-            <option value="parametersPut">PUT /parameters, body={msg.payload}</option>
-            <option value="premium">GET /premium</option>
-            <option value="categories">GET /serviceinfo/categories/{msg.payload}</option>
-            <option value="modeGet">GET /smarthome/mode</option>
-            <option value="modePut">PUT /smarthome/mode, body={msg.payload}</option>
-            <option value="thermostatsGet">GET /smarthome/thermostats</option>
-            <option value="thermostatsPost">POST /smarthome/thermostats, body={msg.payload}</option>
+            <option value="default">GET /v3/devices/{deviceId}/points (parsed, easy-to-read)</option>
+            <option value="GET-aid-mode">GET /v2/devices/{deviceId}/aidMode</option>
+            <option value="GET-devices">GET /v2/devices/{deviceId}</option>
+            <option value="GET-smart-home-categories">GET /v2/devices/{deviceId}/smart-home-categories</option>
+            <option value="GET-smart-home-zones">GET /v2/devices/{deviceId}/smart-home-zones</option>
+            <option value="PATCH-devices-points">PATCH /v2/devices/{deviceId}/points, body={msg.payload}</option>
+            <option value="PATCH-devices-zones">PATCH /v2/devices/{deviceId}/zones/{zoneId}, body={msg.payload}</option>
+            <option value="GET-devices-points">GET /v3/devices/{deviceId}/points, optinal: body={msg.payload}</option>
+            <option value="GET-alarms">GET /v2/systems/{config:systemId}/notifications</option>
             <option value="systems">GET /systems</option>
+            <option value="PUT-smart-home-mode">PUT /v2/systems/{config:systemId}/smart-home-mode, smartHomeMode={msg.payload}</option>
+            <option value="GET-smart-home-mode">GET /v2/systems/{config:systemId}/smart-home-mode</option>
         </select>
     </div>
     <div class="form-row">
@@ -125,8 +123,8 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="nibeuplink">
-    <p>A Node-Red Node for collecting data from nibe uplink API v1 <a href="https://api.nibeuplink.com/docs/v1" target="_blank">documentation found here</a>.</p>
+<script type="text/html" data-help-name="myuplink">
+    <p>A Node-Red Node for collecting data from myUplink API <a href="https://dev.myuplink.com/" target="_blank">documentation found here</a>.</p>
     <p><i>Import examples for help and a quick start</i></p>
     <h3>Inputs</h3>
     <dl class="message-properties">

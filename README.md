@@ -1,15 +1,19 @@
-# node-red-contrib-nibeuplink / myuplink
-Node-Red Node for collecting data from nibe uplink.
+# node-red-contrib-myuplink BETA TESTING
+Node-Red Node for collecting data from myUplink.
 
 [![Platform](https://img.shields.io/badge/platform-Node--RED-red.svg)](https://nodered.org)
 
+
+**How to install**
+Help beta test if you got the time. You would need access to console. Cd to dir of node-red instance and run:
+```
+npm install github:zinen/node-red-contrib-nibeuplink#myuplink2024 github:zinen/node-nibe-fetcher-promise#myuplink2024
+```
+
 During setup of config you will be guided on how to sign up for an API key to your own account. For an easy start import the example.
 
-**BETA testing now: Looking for myuplink?** As of 2024 a new API(myuplink) is being rolled out to replace NibeUplink. New branch under developing [find the branch and details here](https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024). 
-
-
 **How to import:**
-Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
+Menu top right -> Import -> Examples -> node-red-contrib-myuplink -> basic
 
 ![](image/node.png) The node
 
@@ -18,25 +22,17 @@ Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
 
 ## List of supported functions
 
-Documentation of functions are found here https://api.nibeuplink.com/docs/v1/Functions
+Documentation of functions are found here https://api.myuplink.com/swagger/index.html
 
-| Included in node | Functions | Scope |
-|---|---|---|
-| yes | GET api/v1/systems/{systemId}/status/system | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/status/systemUnit/{systemUnitId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/software | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/config | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/units | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/notifications | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/parameters | READSYSTEM |
-| yes | PUT api/v1/systems/{systemId}/parameters | WRITESYSTEM |
-| yes | GET api/v1/systems/{systemId}/premium | READSYSTEM |
-| yes, raw and parsed | GET api/v1/systems/{systemId}/serviceinfo/categories | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/serviceinfo/categories/{categoryId} | READSYSTEM |
-| yes | GET api/v1/systems/{systemId}/smarthome/mode | READSYSTEM |
-| yes | PUT api/v1/systems/{systemId}/smarthome/mode | WRITESYSTEM |
-| yes | GET api/v1/systems/{systemId}/smarthome/thermostats | READSYSTEM |
-| yes | POST api/v1/systems/{systemId}/smarthome/thermostats | WRITESYSTEM |
-| yes | GET api/v1/systems | READSYSTEM |
+# Help with app setup
+For node-red access you need to register an app on you user profile at:
+https://dev.myuplink.com/apps
+
+Guide text inside node-red config setup should help you fill in any specific details needed.
+
+## What is offline access
+*This question might come to you when during the setup you are asked for the one time auth code. If you press the wrong button here, clear browser history and try again.*
+
+**Remember to check the offline access checkmark after login to myUplink from the popup** Else you will need generate a new one time auth code every hour! I know the offline access statement seems worrisome but that just means that your auth codes can be refreshed without you needing to login and approve it each time/aka every hour.
+
+![alt](./img/myUplink-offline-access.jpg)
