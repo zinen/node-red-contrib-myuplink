@@ -6,7 +6,7 @@ name: npm test and publish
 on:
   # Run on push to the main branch
   push:
-    branches: [ main ]
+    branches: [ main, nibe-uplink2024OLD ]
   # Run only test part for PRs.
   pull_request:
 
