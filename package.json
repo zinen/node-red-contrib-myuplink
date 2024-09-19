@@ -6,8 +6,7 @@
     "node-red",
     "nibeuplink",
     "volund",
-    "vølund",
-    "myuplink"
+    "vølund"
   ],
   "bugs": {
     "url": "https://github.com/zinen/node-red-contrib-nibeuplink/issues"
