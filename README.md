@@ -1,14 +1,8 @@
-# node-red-contrib-myuplink BETA TESTING
+# node-red-contrib-myuplink
 Node-Red Node for collecting data from myUplink.
 
 [![Platform](https://img.shields.io/badge/platform-Node--RED-red.svg)](https://nodered.org)
 
-
-**How to install**
-Help beta test if you got the time. You would need access to console. Cd to dir of node-red instance and run:
-```
-npm install github:zinen/node-red-contrib-nibeuplink#myuplink2024 github:zinen/node-nibe-fetcher-promise#myuplink2024
-```
 
 During setup of config you will be guided on how to sign up for an API key to your own account. For an easy start import the example.
 
