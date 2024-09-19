@@ -1,12 +1,11 @@
-# node-red-contrib-nibeuplink / myuplink
+# Deprecated: This package has been renamed to node-red-contrib-myuplink
+
+# node-red-contrib-nibeuplink
 Node-Red Node for collecting data from nibe uplink.
 
 [![Platform](https://img.shields.io/badge/platform-Node--RED-red.svg)](https://nodered.org)
 
 During setup of config you will be guided on how to sign up for an API key to your own account. For an easy start import the example.
-
-**BETA testing now: Looking for myuplink?** As of 2024 a new API(myuplink) is being rolled out to replace NibeUplink. New branch under developing [find the branch and details here](https://github.com/zinen/node-red-contrib-nibeuplink/tree/myuplink2024). 
-
 
 **How to import:**
 Menu top right -> Import -> Examples -> node-red-contrib-nibeuplink -> basic
