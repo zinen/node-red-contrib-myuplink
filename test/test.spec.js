@@ -85,8 +85,8 @@ describe('myuplink Node', function () {
     })
   })
   it('env should be defined', function (done) {
-    process.env.should.have.property('CLIENT_ID')
-    process.env.should.have.property('CLIENT_SECRET')
+    process.env.should.have.property('UPLINK_CLIENT_ID')
+    process.env.should.have.property('UPLINK_CLIENT_SECRET')
 
     done()
   })
