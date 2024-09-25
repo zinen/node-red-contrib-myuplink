@@ -8,7 +8,7 @@ module.exports = function (RED) {
     const node = this
     try {
       node.myUplinkClient = new MyUplinkClient({
-        debug: 2, // TODO: remove this
+        debug: 0, // TODO: remove this
         clientId: node.credentials.clientId,
         clientSecret: node.credentials.clientSecret,
         systemId: node.credentials.systemId || undefined,
@@ -49,15 +49,14 @@ module.exports = function (RED) {
         if (!node.server || !node.server.myUplinkClient) {
           throw new Error('Unknown config error')
         }
+        if (msg.authCode && typeof msg.authCode === 'string') {
+          node.server.myUplinkClient.options.authCode = String(msg.authCode)
+          await node.server.myUplinkClient.getNewAccessToken()
+        }
         node.status({ fill: '', text: 'Requesting data' })
         if (!node.server.myUplinkClient.options.systemId) await node.server.myUplinkClient.getSystems()
         const systemId = node.server.myUplinkClient.options.systemId
         const deviceId = node.server.myUplinkClient.options.deviceId || 0
-        if (msg.authCode && typeof msg.authCode === 'string') {
-          node.server.myUplinkClient.options.authCode = String(msg.authCode)
-          await node.server.myUplinkClient.getNewAccessToken()
-          node.warn('myUplink one time auth code used to update token successful.')
-        }
         // Note that outputChoice might be undefined
         if (!node.config.outputChoice || node.config.outputChoice === 'default') {
           msg.payload = await node.server.myUplinkClient.getAllParameters()
